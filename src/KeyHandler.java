@@ -26,7 +26,7 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
+        int key = e.getExtendedKeyCode();
 
         if (key == KeyEvent.VK_W) {
             upPressed = false;
