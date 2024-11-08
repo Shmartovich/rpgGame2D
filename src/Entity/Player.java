@@ -11,7 +11,7 @@ public class Player extends Entity {
     GamePanel gamePanel;
     KeyHandler keyHandler;
     int spriteNumber = 0;
-    int timerToChangeSprite = 0;
+    int timerToChangeSprite = 0; // in frames
 
     String direction = "right";
     int directionIndex = 0; // dependency on direction 0=right, 1=up, 2=left 3=down
@@ -29,32 +29,39 @@ public class Player extends Entity {
     public void setDefaultValues(){
         x = 100;
         y = 100;
-        speed = 10;
+        speed = 5;
     }
 
     public void update(KeyHandler keyHandler) {
-        if(keyHandler.upPressed){
-            direction = "up";
-            y -= speed;
-        }else if(keyHandler.downPressed){
-            direction = "down";
-            y += speed;
-        }else if(keyHandler.leftPressed){
-            direction = "left";
-            x -= speed;
-        }else if(keyHandler.rightPressed){
-            direction = "right";
-            x += speed;
+        if(keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.upPressed){
+            if(keyHandler.upPressed){
+                direction = "up";
+                y -= speed;
+            }else if(keyHandler.downPressed){
+                direction = "down";
+                y += speed;
+            }else if(keyHandler.leftPressed){
+                direction = "left";
+                x -= speed;
+            }else if(keyHandler.rightPressed){
+                direction = "right";
+                x += speed;
+            }
+
+            timerToChangeSprite++;
+            if(timerToChangeSprite > 10){
+                timerToChangeSprite = 0;
+                if (spriteNumber == 5){
+                    spriteNumber = 0;
+                }
+                spriteNumber++;
+            }
+        }
+        else{
+            //todo idle animation
+            spriteNumber = 0;
         }
 
-        timerToChangeSprite++;
-        if(timerToChangeSprite > 10){
-            timerToChangeSprite = 0;
-            if (spriteNumber == 5){
-                spriteNumber = 0;
-            }
-            spriteNumber++;
-        }
     }
 
     public void draw(Graphics2D g2){
