@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
     @Override
     public void run() { // the thread will use this function on start()
+        //todo wenn meine Variante nicht funkionieren würde -> #2 27:55
         while (gameThread != null) {
             long startTime = System.nanoTime();
             //update
