@@ -15,7 +15,7 @@ public class Animation {
     private long frameDuration;         // Zeitdauer eines Frames (in Millisekunden)
     private long lastFrameTime;         // Zeitpunkt des letzten Framewechsels
 
-    public Animation(String spriteSheetPath, int frameWidth, int frameHeight, int frameCount, int fps) {
+    public Animation(String spriteSheetPath, int frameWidth, int frameHeight, int frameCount) {
         try {
             // Laden des Sprite-Sheets
             spriteSheet = ImageIO.read(getClass().getResource(spriteSheetPath));
@@ -27,7 +27,6 @@ public class Animation {
         this.frameHeight = frameHeight;
         this.frameCount = frameCount;
         this.frames = new BufferedImage[frameCount];
-        this.frameDuration = 1000 / fps;  // Frame-Dauer berechnen in ms
 
         // Frames aus dem Sprite-Sheet ausschneiden
         for (int i = 0; i < frameCount; i++) {

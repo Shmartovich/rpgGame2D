@@ -10,10 +10,16 @@ import java.awt.image.BufferedImage;
 public class Player extends Entity {
     GamePanel gamePanel;
     KeyHandler keyHandler;
+    int spriteNumber = 0;
+    int timerToChangeSprite = 0;
 
     String direction = "right";
     int directionIndex = 0; // dependency on direction 0=right, 1=up, 2=left 3=down
-    Animation animationAdam = new Animation("/res/Player/adam_run.png", 16,24,24, 60);
+    //todo rename player*
+    final int playerFrameWidth = 16; // for correct cut of frames sheet
+    final int playerFrameHeight = 24;
+    final int playerAnimationRunFrames = 24;
+    Animation animationAdam = new Animation("/res/Player/adam_run.png", playerFrameWidth, playerFrameHeight, playerAnimationRunFrames);
     public Player(GamePanel gp, KeyHandler kh){
         gamePanel = gp;
         keyHandler = kh;
@@ -23,7 +29,7 @@ public class Player extends Entity {
     public void setDefaultValues(){
         x = 100;
         y = 100;
-        speed = 15;
+        speed = 10;
     }
 
     public void update(KeyHandler keyHandler) {
@@ -41,7 +47,14 @@ public class Player extends Entity {
             x += speed;
         }
 
-
+        timerToChangeSprite++;
+        if(timerToChangeSprite > 10){
+            timerToChangeSprite = 0;
+            if (spriteNumber == 5){
+                spriteNumber = 0;
+            }
+            spriteNumber++;
+        }
     }
 
     public void draw(Graphics2D g2){
@@ -67,18 +80,18 @@ public class Player extends Entity {
 
         switch (direction){
             case "up":
-                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet];
+                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
                 break;
             case "down":
-                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet];
+                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
                 break;
             case "left":
-                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet];
+                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
                 break;
             case "right":
-                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet];
+                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
                 break;
         }
-        g2.drawImage(imageToDraw, x,y, gamePanel.tileSize, gamePanel.tileSize, null);
+        g2.drawImage(imageToDraw, x,y, gamePanel.tileSize, playerFrameHeight * 3, null);
     }
 }
