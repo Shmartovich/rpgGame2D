@@ -28,6 +28,8 @@ public class TileManager {
         int tileID;
         for (int i = playerRow - 1; i <= playerRow + 1; i++) {
             for (int j = playerCol - 1; j <= playerCol + 1; j++) {
+                row = j;
+                col = j;
                 // Check constraints
                 if (i >= 0 && i < int2DimList.size() && j >= 0 && j < int2DimList.get(0).size()) { //todo be cautious with 0
                     tileID = int2DimList.get(i).get(j);
@@ -35,13 +37,6 @@ public class TileManager {
                     try {
                         BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
                         graphics2D.drawImage(image, col * gamePanel.tileSize, row * gamePanel.tileSize, gamePanel.tileSize, gamePanel.tileSize, null);
-                        if(col == 2){
-                            col=0;
-                            row++;
-                        }
-                        else{
-                            col++;
-                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
