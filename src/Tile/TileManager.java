@@ -14,6 +14,7 @@ import Entity.Player;
 public class TileManager {
     GamePanel gamePanel;
     ArrayList<ArrayList<Integer>> int2DimList = new ArrayList<>();
+    ArrayList<ArrayList<BufferedImage>> tiles = new ArrayList<>();
     public TileManager(GamePanel gamePanel, String mapPath) {
         this.gamePanel = gamePanel;
         loadMap(mapPath);
@@ -22,17 +23,29 @@ public class TileManager {
     public void draw(Graphics2D graphics2D){
         int playerCol = Player.x / gamePanel.tileSize;
         int playerRow = Player.y / gamePanel.tileSize;
-        System.out.println(Player.x);
-        int tileID;
+        int centerCol = gamePanel.maxScreenCol / 2 - 2;
+        int centerRow = gamePanel.maxScreenRow / 2 - 2;
+        int tempCenterCol = centerCol;
+        int tempCenterRow = centerRow;
+
         for (int i = playerRow - 1; i <= playerRow + 1; i++) {
             for (int j = playerCol - 1; j <= playerCol + 1; j++) {
                 // Check constraints
-                if (i >= 0 && i < int2DimList.size() && j >= 0 && j < int2DimList.get(0).size()) { //todo be cautious with 0
-                    tileID = int2DimList.get(i).get(j);
+                if (playerRow >= 0 && playerRow < int2DimList.size() &&
+                        playerCol >= 0 && playerCol < int2DimList.get(0).size()) { //todo be cautious with 0
+                    int tileID = int2DimList.get(i).get(j);
                     String tilePath = String.format("/tilesNumbered/%d.png", tileID);
                     try {
                         BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
-                        graphics2D.drawImage(image, j * gamePanel.tileSize, i * gamePanel.tileSize, gamePanel.tileSize, gamePanel.tileSize, null);
+                        graphics2D.drawImage(image, tempCenterCol*gamePanel.tileSize, tempCenterRow*gamePanel.tileSize,
+                                gamePanel.tileSize, gamePanel.tileSize, null);
+                        if(tempCenterCol-centerCol == 2){
+                            tempCenterCol = centerCol;
+                            tempCenterRow++;
+                        }
+                        else{
+                            tempCenterCol++;
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -42,6 +55,10 @@ public class TileManager {
                 }
             }
         }
+    }
+
+    private void prepareImages(BufferedImage image, int playerCol, int playerRow){
+
     }
 
     private void loadMap(String path){
