@@ -23,20 +23,16 @@ public class TileManager {
         int playerCol = Player.x / gamePanel.tileSize;
         int playerRow = Player.y / gamePanel.tileSize;
         System.out.println(Player.x);
-        int col = 0;
-        int row = 0;
         int tileID;
         for (int i = playerRow - 1; i <= playerRow + 1; i++) {
             for (int j = playerCol - 1; j <= playerCol + 1; j++) {
-                row = i;
-                col = j;
                 // Check constraints
                 if (i >= 0 && i < int2DimList.size() && j >= 0 && j < int2DimList.get(0).size()) { //todo be cautious with 0
                     tileID = int2DimList.get(i).get(j);
                     String tilePath = String.format("/tilesNumbered/%d.png", tileID);
                     try {
                         BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
-                        graphics2D.drawImage(image, col * gamePanel.tileSize, row * gamePanel.tileSize, gamePanel.tileSize, gamePanel.tileSize, null);
+                        graphics2D.drawImage(image, j * gamePanel.tileSize, i * gamePanel.tileSize, gamePanel.tileSize, gamePanel.tileSize, null);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
