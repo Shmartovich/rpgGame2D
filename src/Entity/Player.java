@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
+    public static int x;
+    public static int y;
     GamePanel gamePanel;
     KeyHandler keyHandler;
     int spriteNumber = 0;

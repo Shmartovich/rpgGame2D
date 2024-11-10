@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -15,18 +14,15 @@ import Entity.Player;
 public class TileManager {
     GamePanel gamePanel;
     ArrayList<ArrayList<Integer>> int2DimList = new ArrayList<>();
-    int playerX;
-    int playerY;
-    public TileManager(GamePanel gamePanel, Player player, String mapPath) {
+    public TileManager(GamePanel gamePanel, String mapPath) {
         this.gamePanel = gamePanel;
-        this.playerX = player.x;
-        this.playerY = player.y;
         loadMap(mapPath);
     }
 
     public void draw(Graphics2D graphics2D){
-        int playerCol = playerX / gamePanel.tileSize;
-        int playerRow = playerY / gamePanel.tileSize;
+        int playerCol = Player.x / gamePanel.tileSize;
+        int playerRow = Player.y / gamePanel.tileSize;
+        System.out.println(Player.x);
         int col = 0;
         int row = 0;
         int tileID;
@@ -39,8 +35,13 @@ public class TileManager {
                     try {
                         BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
                         graphics2D.drawImage(image, col * gamePanel.tileSize, row * gamePanel.tileSize, gamePanel.tileSize, gamePanel.tileSize, null);
-                        col++;
-                        row++;
+                        if(col == 2){
+                            col=0;
+                            row++;
+                        }
+                        else{
+                            col++;
+                        }
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
