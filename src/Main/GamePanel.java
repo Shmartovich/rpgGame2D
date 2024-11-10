@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyHandler = new KeyHandler();
     Player player = new Player(this, keyHandler);
-    TileManager tileManager = new TileManager(this, "/Maps/map1");
+    TileManager tileManager = new TileManager(this, "/Maps/map2");
     Thread gameThread;
 
     // Player

@@ -34,7 +34,7 @@ public class TileManager {
                 if (playerRow >= 0 && playerRow < int2DimList.size() &&
                         playerCol >= 0 && playerCol < int2DimList.get(0).size()) { //todo be cautious with 0
                     int tileID = int2DimList.get(i).get(j);
-                    String tilePath = String.format("/tilesNumbered/%d.png", tileID);
+                    String tilePath = String.format("/tilesNumbered/%d.png", tileID+1);
                     try {
                         BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
                         graphics2D.drawImage(image, tempCenterCol*gamePanel.tileSize, tempCenterRow*gamePanel.tileSize,
@@ -68,7 +68,7 @@ public class TileManager {
             ArrayList<Integer> intList = new ArrayList<>();
 
             while ((line = reader.readLine()) != null) {
-                words = line.split(", ");
+                words = line.split(",");
                 for(String str : words){
                     intList.add(Integer.parseInt(str));
                 }
