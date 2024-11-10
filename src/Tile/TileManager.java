@@ -6,46 +6,56 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import Entity.Player;
 
 public class TileManager {
     GamePanel gamePanel;
-    Tile [] tiles;
-    public TileManager(GamePanel gamePanel) {
+    ArrayList<ArrayList<Integer>> int2DimList = new ArrayList<>();
+    int playerX;
+    int playerY;
+    public TileManager(GamePanel gamePanel, Player player, String mapPath) {
         this.gamePanel = gamePanel;
-        tiles = new Tile[9];
-        for(int i = 0; i < tiles.length; i++) {
-            tiles[i] = ImageIO.read(getClass().getResource());
-        }
+        this.playerX = player.x;
+        this.playerY = player.y;
+        loadMap(mapPath);
     }
 
     public void draw(Graphics2D graphics2D){
-        int x = 0,y = 0;
-        for(int i = 0; i < 9; i++){
-            graphics2D.drawImage(tiles[i].image, x, y, gamePanel.tileSize,gamePanel.tileSize,null);
-            x+=gamePanel.tileSize;
-        }
-    }
+        int playerCol = playerX / gamePanel.tileSize;
+        int playerRow = playerY / gamePanel.tileSize;
+        int col;
+        int row;
 
-    public void loadMap(String path){
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))){
-            String line;
-            String [] lines;
-            ArrayList<Integer> intList = new ArrayList<>();
-            ArrayList<ArrayList<Integer>> int2DimList = new ArrayList<>();
-
-            while ((line = reader.readLine()) != null) {
-                lines = line.split(", ");
-                for(String str : lines){
-                    intList.add(Integer.parseInt(str));
-                }
-                int2DimList.add(intList);
-                intList.clear();
+            //todo i,j are from which point?! player is a center these are "edges"
+            int tileID = int2DimList.get(playerCol).get(playerRow);
+            String tilePath = String.format("/tilesNumbered/%d.png", tileID);
+            try {
+                BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
+                graphics2D.drawImage(image, playerCol, playerCol, gamePanel.tileSize,gamePanel.tileSize,null);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
+    }
+
+    private void loadMap(String path){
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path)))){
+            String line;
+            String [] words;
+            ArrayList<Integer> intList = new ArrayList<>();
+
+            while ((line = reader.readLine()) != null) {
+                words = line.split(", ");
+                for(String str : words){
+                    intList.add(Integer.parseInt(str));
+                }
+                int2DimList.add(new ArrayList<>(intList));
+                intList.clear();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

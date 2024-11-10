@@ -1,5 +1,8 @@
 package Tile;
 
+import Main.GamePanel;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Tile {
