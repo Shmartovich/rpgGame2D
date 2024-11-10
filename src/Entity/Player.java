@@ -101,6 +101,6 @@ public class Player extends Entity {
                 imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
                 break;
         }
-        g2.drawImage(imageToDraw, x,y, gamePanel.tileSize, playerFrameHeight * 3, null);
+        g2.drawImage(imageToDraw, gamePanel.screenWidth/2 - gamePanel.tileSize, gamePanel.screenHeight/2 - gamePanel.tileSize, gamePanel.tileSize, playerFrameHeight * 3, null);
     }
 }

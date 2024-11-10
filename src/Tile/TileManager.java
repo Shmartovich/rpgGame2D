@@ -37,6 +37,9 @@ public class TileManager {
                         throw new RuntimeException(e);
                     }
                 }
+                else{
+                    //todo karte grenze
+                }
             }
         }
     }
