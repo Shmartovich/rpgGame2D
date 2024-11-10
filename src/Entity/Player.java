@@ -19,7 +19,7 @@ public class Player extends Entity {
     final int playerFrameWidth = 16; // for correct cut of frames sheet
     final int playerFrameHeight = 24;
     final int playerAnimationRunFrames = 24;
-    Animation animationAdam = new Animation("/res/Player/adam_run.png", playerFrameWidth, playerFrameHeight, playerAnimationRunFrames);
+    Animation animationAdam = new Animation("/Player/adam_run.png", playerFrameWidth, playerFrameHeight, playerAnimationRunFrames);
     public Player(GamePanel gp, KeyHandler kh){
         gamePanel = gp;
         keyHandler = kh;
