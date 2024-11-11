@@ -21,8 +21,13 @@ public class TileManager {
     }
 
     public void draw(Graphics2D graphics2D){
-        int playerCol = Player.x / gamePanel.tileSize;
-        int playerRow = Player.y / gamePanel.tileSize;
+
+    }
+
+    // todo wenn player in der dunkelheit bummelt
+    public void drawAroundPlayer(Graphics2D graphics2D){
+        int playerCol = Player.worldX / gamePanel.tileSize;
+        int playerRow = Player.worldY / gamePanel.tileSize;
         int centerCol = gamePanel.maxScreenCol / 2 - 2;
         int centerRow = gamePanel.maxScreenRow / 2 - 2;
         int tempCenterCol = centerCol;
@@ -57,9 +62,6 @@ public class TileManager {
         }
     }
 
-    private void prepareImages(BufferedImage image, int playerCol, int playerRow){
-
-    }
 
     private void loadMap(String path){
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path)))){

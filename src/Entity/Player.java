@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player extends Entity {
-    public static int x;
-    public static int y;
     GamePanel gamePanel;
     KeyHandler keyHandler;
     int spriteNumber = 0;
@@ -29,8 +27,11 @@ public class Player extends Entity {
         setDefaultValues();
     }
     public void setDefaultValues(){
-        x = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
-        y = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2;
+        screenX = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
+        screenY = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2;
+        worldX = 0;
+        worldY = 0;
+
         speed = 5;
     }
 
@@ -38,16 +39,16 @@ public class Player extends Entity {
         if(keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.upPressed){
             if(keyHandler.upPressed){
                 direction = "up";
-                y -= speed;
+                worldY -= speed;
             }else if(keyHandler.downPressed){
                 direction = "down";
-                y += speed;
+                worldY += speed;
             }else if(keyHandler.leftPressed){
                 direction = "left";
-                x -= speed;
+                worldX -= speed;
             }else if(keyHandler.rightPressed){
                 direction = "right";
-                x += speed;
+                worldX += speed;
             }
 
             timerToChangeSprite++;
@@ -101,6 +102,6 @@ public class Player extends Entity {
                 imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
                 break;
         }
-        g2.drawImage(imageToDraw, gamePanel.screenWidth/2 - gamePanel.tileSize, gamePanel.screenHeight/2 - gamePanel.tileSize, gamePanel.tileSize, playerFrameHeight * 3, null);
+        g2.drawImage(imageToDraw, screenX, screenY, gamePanel.tileSize, playerFrameHeight * 3, null);
     }
 }

@@ -1,6 +1,10 @@
 package Entity;
 
 public class Entity {
-    public int x,y;
+    public static int screenX;
+    public static int screenY;
+    public static int worldX;
+    public static int worldY;
+
     public int speed;
 }
