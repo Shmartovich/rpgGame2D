@@ -6,18 +6,25 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import Entity.Player;
+import java.util.stream.Stream;
 
 public class TileManager {
-    private final String pathToTiles = "tilesNumbered/";
+    private final String pathToTilesWithoutCollision = "Tiles/tilesNumberedWithoutCollision/";
+    private final String pathToTilesWithCollision = "Tiles/tilesNumberedWithCollision/";
     GamePanel gamePanel;
     ArrayList<ArrayList<Integer>> int2DimList = new ArrayList<>();
-    BufferedImage [] [] tiles;
+    static private final ArrayList<Tile> tiles = new ArrayList<Tile>();
+
     public TileManager(GamePanel gamePanel, String mapPath) {
         this.gamePanel = gamePanel;
+        loadTiles();
         loadMap(mapPath);
     }
 
@@ -33,11 +40,16 @@ public class TileManager {
         while(screenY < gamePanel.screenHeight){
             while(screenX < gamePanel.screenWidth){
                 BufferedImage image;
-                if(i < 0 ||  i >= tiles.length - 1 || j < 0 || j >= tiles[i].length - 1){
-                    image = tiles[0][0];
+
+                if(i < 0 ||  i >= int2DimList.size() - 1 || j < 0 || j >= int2DimList.get(i).size() - 1){
+                    image = tiles.get(0).image;
                 }
                 else{
-                    image = tiles[i][j];
+                    int imageID = int2DimList.get(i).get(j);
+                    image = tiles.stream()
+                            .filter(tile -> tile.id == imageID)
+                            .findFirst()
+                            .get().image;
                 }
                 graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
                 screenX += gamePanel.tileSize;
@@ -70,7 +82,7 @@ public class TileManager {
                 if (playerRow >= 0 && playerRow < int2DimList.size() &&
                         playerCol >= 0 && playerCol < int2DimList.get(0).size()) { //todo be cautious with 0
                     int tileID = int2DimList.get(i).get(j);
-                    String tilePath = String.format("/tilesNumbered/%d.png", tileID+1);
+                    String tilePath = String.format("/Tiles/tilesNumberedWithoutCollision/%d.png", tileID+1);
                     try {
                         BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
                         graphics2D.drawImage(image, tempCenterCol*gamePanel.tileSize, tempCenterRow*gamePanel.tileSize,
@@ -112,16 +124,38 @@ public class TileManager {
                 rows++;
                 intList.clear();
             }
-            tiles = new BufferedImage[rows][cols];
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < cols; j++) {
-                    String tilePath = String.format("/tilesNumbered/%d.png", int2DimList.get(i).get(j) + 1);
-                    tiles[i][j] = ImageIO.read(getClass().getResource(tilePath));
-                }
-            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private void loadTiles(){
+        try (Stream<Path> paths = Files.walk(Paths.get("Tiles/tilesNumberedWithCollision"))) {
+            paths
+                    .filter(Files::isRegularFile)
+                    .map(Path::toFile)
+                    .forEach(file -> createTilesArray(file, true));
+        }
+        catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+        try (Stream<Path> paths = Files.walk(Paths.get("Tiles/tilesNumberedWithoutCollision"))) {
+            paths
+                    .filter(Files::isRegularFile)
+                    .map(Path::toFile)
+                    .forEach(file -> createTilesArray(file, false));
+        }
+        catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    private static void createTilesArray(File file, boolean collision){
+        try{
+            Tile tile = new Tile(ImageIO.read(file), collision);
+            tiles.add(tile);
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
