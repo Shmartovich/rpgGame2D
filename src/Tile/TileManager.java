@@ -108,20 +108,16 @@ public class TileManager {
 
     private void loadMap(String pathMap){
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(pathMap)))){
-            int rows = 0;
-            int cols = 0;
             String line;
             String [] words;
             ArrayList<Integer> intList = new ArrayList<>();
 
             while ((line = reader.readLine()) != null) {
                 words = line.split(",");
-                cols = words.length; // todo da ich keine jagged arrays in map habe, ist es in dem moment kein problem
                 for(String str : words){
                     intList.add(Integer.parseInt(str));
                 }
                 int2DimList.add(new ArrayList<>(intList));
-                rows++;
                 intList.clear();
             }
         } catch (IOException e) {
@@ -130,7 +126,7 @@ public class TileManager {
     }
 
     private void loadTiles(){
-        try (Stream<Path> paths = Files.walk(Paths.get("Tiles/tilesNumberedWithCollision"))) {
+        try (Stream<Path> paths = Files.walk(Paths.get("/home/shmart/dimag/MyProjects/rpgGame2D/theGame/resources/Tiles/tilesNumberedWithCollision"))) {
             paths
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
@@ -139,11 +135,11 @@ public class TileManager {
         catch(IOException e){
             System.out.println(e.getMessage());
         }
-        try (Stream<Path> paths = Files.walk(Paths.get("Tiles/tilesNumberedWithoutCollision"))) {
+        try (Stream<Path> paths = Files.walk(Paths.get("/home/shmart/dimag/MyProjects/rpgGame2D/theGame/resources/Tiles/tilesNumberedWithoutCollision"))) {
             paths
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
-                    .forEach(file -> createTilesArray(file, false));
+                    .forEach(file -> createTilesArray(file, true));
         }
         catch(IOException e){
             System.out.println(e.getMessage());
