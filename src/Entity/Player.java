@@ -13,7 +13,6 @@ public class Player extends Entity {
     int spriteNumber = 0;
     int timerToChangeSprite = 0; // in frames
 
-    String direction = "right";
     int directionIndex = 0; // dependency on direction 0=right, 1=up, 2=left 3=down
     //todo rename player*
     final int playerFrameWidth = 16; // for correct cut of frames sheet
@@ -23,34 +22,58 @@ public class Player extends Entity {
     public Player(GamePanel gp, KeyHandler kh){
         gamePanel = gp;
         keyHandler = kh;
-
         setDefaultValues();
     }
     public void setDefaultValues(){
         screenX = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
         screenY = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2;
-        worldX = 0;
-        worldY = 0;
-
-        speed = 5;
+        worldX = 48;
+        worldY = 48;
+        collisionRectangle = new Rectangle();
+        collisionRectangle.x = 8;
+        collisionRectangle.y = 16;
+        collisionRectangle.width = playerFrameWidth * gamePanel.scale - 16;
+        collisionRectangle.height = playerFrameHeight * gamePanel.scale - 16;
+        speed = 8;
     }
 
     public void update(KeyHandler keyHandler) {
         if(keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed || keyHandler.upPressed){
             if(keyHandler.upPressed){
                 direction = "up";
-                worldY -= speed;
             }else if(keyHandler.downPressed){
                 direction = "down";
-                worldY += speed;
             }else if(keyHandler.leftPressed){
                 direction = "left";
-                worldX -= speed;
             }else if(keyHandler.rightPressed){
                 direction = "right";
-                worldX += speed;
             }
 
+            // ACTIVATE COLLISION ON PLAYER IF ON SOLID TILE
+            collisionOn = false;
+            System.out.printf("ich stehe hier: col %d, row %d\n", worldX/ gamePanel.tileSize, worldY/ gamePanel.tileSize);
+            printCollisionCoordinates();
+            gamePanel.collisionChecker.checkTile(this);
+            if(collisionOn == false){
+                switch (direction){
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            //todo soll ich die animation nicht abspielen wenn player sich nicht bewegen kann?
             timerToChangeSprite++;
             if(timerToChangeSprite > 10){
                 timerToChangeSprite = 0;
@@ -103,5 +126,18 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(imageToDraw, screenX, screenY, gamePanel.tileSize, playerFrameHeight * 3, null);
+    }
+
+    private void printCollisionCoordinates(){
+        System.out.printf("Player coordinates: x-%d,y-%d,x+width-%d,y+height-%d\n",
+                this.worldX,
+                this.worldY,
+                this.worldX + playerFrameWidth * gamePanel.scale,
+                this.worldY + playerFrameHeight * gamePanel.scale);
+        System.out.printf("Collision coordinates: x-%d,y-%d,x+width-%d,y+height-%d\n",
+                this.collisionRectangle.x + worldX,
+                this.collisionRectangle.y + worldY,
+                this.collisionRectangle.x + worldX + collisionRectangle.width,
+                this.collisionRectangle.y + worldY + collisionRectangle.height);
     }
 }

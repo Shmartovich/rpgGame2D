@@ -19,8 +19,8 @@ public class TileManager {
     private final String pathToTilesWithoutCollision = "Tiles/tilesNumberedWithoutCollision/";
     private final String pathToTilesWithCollision = "Tiles/tilesNumberedWithCollision/";
     GamePanel gamePanel;
-    ArrayList<ArrayList<Integer>> int2DimList = new ArrayList<>();
-    static private final ArrayList<Tile> tiles = new ArrayList<Tile>();
+    public ArrayList<ArrayList<Integer>> parsedMap = new ArrayList<>();
+    static public final ArrayList<Tile> tiles = new ArrayList<Tile>();
 
     public TileManager(GamePanel gamePanel, String mapPath) {
         this.gamePanel = gamePanel;
@@ -41,11 +41,11 @@ public class TileManager {
             while(screenX < gamePanel.screenWidth){
                 BufferedImage image;
 
-                if(i < 0 ||  i >= int2DimList.size() - 1 || j < 0 || j >= int2DimList.get(i).size() - 1){
+                if(i < 0 ||  i >= parsedMap.size() - 1 || j < 0 || j >= parsedMap.get(i).size() - 1){
                     image = tiles.get(0).image;
                 }
                 else{
-                    int imageID = int2DimList.get(i).get(j);
+                    int imageID = parsedMap.get(i).get(j);
                     image = tiles.stream()
                             .filter(tile -> tile.id == imageID)
                             .findFirst()
@@ -79,9 +79,9 @@ public class TileManager {
         for (int i = playerRow - 1; i <= playerRow + 1; i++) {
             for (int j = playerCol - 1; j <= playerCol + 1; j++) {
                 // Check constraints
-                if (playerRow >= 0 && playerRow < int2DimList.size() &&
-                        playerCol >= 0 && playerCol < int2DimList.get(0).size()) { //todo be cautious with 0
-                    int tileID = int2DimList.get(i).get(j);
+                if (playerRow >= 0 && playerRow < parsedMap.size() &&
+                        playerCol >= 0 && playerCol < parsedMap.get(0).size()) { //todo be cautious with 0
+                    int tileID = parsedMap.get(i).get(j);
                     String tilePath = String.format("/Tiles/tilesNumberedWithoutCollision/%d.png", tileID+1);
                     try {
                         BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
@@ -117,7 +117,7 @@ public class TileManager {
                 for(String str : words){
                     intList.add(Integer.parseInt(str));
                 }
-                int2DimList.add(new ArrayList<>(intList));
+                parsedMap.add(new ArrayList<>(intList));
                 intList.clear();
             }
         } catch (IOException e) {
@@ -139,7 +139,7 @@ public class TileManager {
             paths
                     .filter(Files::isRegularFile)
                     .map(Path::toFile)
-                    .forEach(file -> createTilesArray(file, true));
+                    .forEach(file -> createTilesArray(file, false));
         }
         catch(IOException e){
             System.out.println(e.getMessage());

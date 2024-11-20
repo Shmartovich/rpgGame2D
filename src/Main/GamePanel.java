@@ -10,7 +10,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Screen settings
     private final int originalTileSize = 16; // 16x16 px
-    private final int scale = 3;
+    public final int scale = 3;
     public final int tileSize = originalTileSize * scale;
 
     public final int maxScreenCol = 16;
@@ -23,6 +23,8 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyHandler = new KeyHandler();
     public Player player = new Player(this, keyHandler);
     TileManager tileManager = new TileManager(this, "/Maps/map2.csv");
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
+
     Thread gameThread;
 
 
