@@ -79,12 +79,14 @@ public class TileManager {
         for (int i = playerRow - 1; i <= playerRow + 1; i++) {
             for (int j = playerCol - 1; j <= playerCol + 1; j++) {
                 // Check constraints
+                BufferedImage image;
                 if (playerRow >= 0 && playerRow < parsedMap.size() &&
                         playerCol >= 0 && playerCol < parsedMap.get(0).size()) { //todo be cautious with 0
-                    int tileID = parsedMap.get(i).get(j);
-                    String tilePath = String.format("/Tiles/tilesNumberedWithoutCollision/%d.png", tileID+1);
-                    try {
-                        BufferedImage image = ImageIO.read(getClass().getResource(tilePath));
+                    int imageID = parsedMap.get(i).get(j);
+                        image = tiles.stream()
+                                .filter(tile -> tile.id == imageID)
+                                .findFirst()
+                                .get().image;
                         graphics2D.drawImage(image, tempCenterCol*gamePanel.tileSize, tempCenterRow*gamePanel.tileSize,
                                 gamePanel.tileSize, gamePanel.tileSize, null);
                         if(tempCenterCol-centerCol == 2){
@@ -94,12 +96,13 @@ public class TileManager {
                         else{
                             tempCenterCol++;
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+
                 }
                 else{
                     //todo karte grenze
+                        image = tiles.get(0).image; // get default solid Tile
+                    graphics2D.drawImage(image, tempCenterCol*gamePanel.tileSize, tempCenterRow*gamePanel.tileSize,
+                            gamePanel.tileSize, gamePanel.tileSize, null);
                 }
             }
         }
