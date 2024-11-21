@@ -34,7 +34,7 @@ public class Player extends Entity {
         collisionRectangle.y = 16;
         collisionRectangle.width = playerFrameWidth * gamePanel.scale - 16;
         collisionRectangle.height = playerFrameHeight * gamePanel.scale - 16;
-        speed = 8;
+        speed = 4;
     }
 
     public void update(KeyHandler keyHandler) {

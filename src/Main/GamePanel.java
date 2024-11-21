@@ -54,7 +54,7 @@ public class GamePanel extends JPanel implements Runnable {
                 long endTime = System.nanoTime();
                 long delta = endTime - startTime;
                 if(delta >= 1000000000/FPS){
-                    System.out.println("FPS: " + Math.round(1/(delta / 1000000000.0)));
+                    // todo ist not correct System.out.println("FPS: " + Math.round(1/(delta / 1000000000.0)));
                     break;
                 }
             }
