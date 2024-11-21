@@ -29,45 +29,27 @@ public class TileManager {
     }
 
     public void draw(Graphics2D graphics2D){
-        int tempScreenX = 0;
-        int tempScreenY = 0;
+       int worldCol = 0;
+       int worldRow = 0;
 
-        // upper left tile
-        int startCol = (gamePanel.player.worldX - gamePanel.player.screenCenterX)/ gamePanel.tileSize;
-        int startRow = (gamePanel.player.worldY - gamePanel.player.screenCenterY)/ gamePanel.tileSize;
-        int i = startRow;
-        int j = startCol;
-        while(tempScreenY < gamePanel.screenHeight){
-            while(tempScreenX < gamePanel.screenWidth){
-                BufferedImage image;
+       while(worldCol < gamePanel.maxWorldCol && worldRow < gamePanel.maxWorldRow){
+           int tileID = parsedMap.get(worldCol).get(worldRow);
 
-                if(i < 0 ||  i >= parsedMap.size() - 1 || j < 0 || j >= parsedMap.get(i).size() - 1){
-                    image = tiles.get(0).image; // get default solid Tile
-                }
-                else{
-                    int imageID = parsedMap.get(i).get(j);
-                    image = tiles.stream()
-                            .filter(tile -> tile.id == imageID)
-                            .findFirst()
-                            .get().image;
-                }
-                graphics2D.drawImage(image, tempScreenX, tempScreenY, gamePanel.tileSize, gamePanel.tileSize, null);
-                tempScreenX += gamePanel.tileSize;
-                j++;
-            }
-            j = startCol;
-            i++;
-            tempScreenX = 0;
-            tempScreenY += gamePanel.tileSize;
-        }
-        int x = 0;
-        while (x < 5){
-            System.out.println("x=" + x);
-            x++;
-        }
+           int worldX = worldCol * gamePanel.tileSize;
+           int worldY = worldRow * gamePanel.tileSize;
+           int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenCenterX;
+           int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenCenterY;
+
+           graphics2D.drawImage(findTile(tileID).image, screenX, screenY, gamePanel.tileSize,gamePanel.tileSize, null);
+           worldCol++;
+           if(worldCol == gamePanel.maxWorldCol){
+               worldRow++;
+               worldCol = 0;
+           }
+       }
     }
 
-    // todo wenn player in der dunkelheit bummelt
+    // todo wenn player in der dunkelheit bummelt (bewegung soll hüpfartig sein, oder ändere hier draw implemtierung)
     public void drawAroundPlayer(Graphics2D graphics2D){
         int playerCol = gamePanel.player.worldX / gamePanel.tileSize;
         int playerRow = gamePanel.player.worldY / gamePanel.tileSize;
@@ -156,5 +138,14 @@ public class TileManager {
         catch (IOException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private Tile findTile(int id){
+        for(Tile tile : tiles){
+            if(tile.id == id){
+                return tile;
+            }
+        }
+        return tiles.get(0);
     }
 }
