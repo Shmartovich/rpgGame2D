@@ -15,90 +15,51 @@ public class CollisionChecker {
     public void checkTile(Entity entity){
         int collisionLeftX = entity.worldX + entity.collisionRectangle.x;
         int collisionRightX = collisionLeftX + entity.collisionRectangle.width;
-        int collisionUpY = entity.worldY + entity.collisionRectangle.y;
-        int collisionDownY = collisionUpY + entity.collisionRectangle.height;
-        int collisionRow;
-        int collisionCol;
-        int tileID;
+        int collisionTopY = entity.worldY + entity.collisionRectangle.y;
+        int collisionBottomY = collisionTopY + entity.collisionRectangle.height;
+
+        int collisionTopRow = (collisionTopY - entity.speed) / gamePanel.tileSize;
+        int collisionBottomRow = (collisionBottomY - entity.speed) / gamePanel.tileSize;
+        int collisionLeftCol = (collisionLeftX - entity.speed) / gamePanel.tileSize;
+        int collisionRightCol =  (collisionRightX - entity.speed) / gamePanel.tileSize;
+
+        int tile1_ID;
+        int tile2_ID;
         switch(entity.direction){
             case "up":
-                collisionRow = collisionUpY / gamePanel.tileSize;
-
-                collisionCol = collisionLeftX / gamePanel.tileSize;
-                tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
-                if(tileHasCollision(TileManager.tiles, tileID)){
+                tile1_ID = gamePanel.tileManager.parsedMap.get(collisionTopRow).get(collisionLeftCol);
+                tile2_ID = gamePanel.tileManager.parsedMap.get(collisionTopRow).get(collisionRightCol);
+                if(tileHasCollision(TileManager.tiles, tile1_ID) || tileHasCollision(TileManager.tiles, tile2_ID)){
                     entity.collisionOn = true;
-                    printInfoCollidedTile(tileID);
-
-                }
-                // wahrscheinlich ist, dass der Tile daneben solid ist
-                else{
-                    collisionCol = collisionRightX / gamePanel.tileSize;
-                    tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
-                    if(tileHasCollision(TileManager.tiles, tileID)){
-                        entity.collisionOn = true;
-                        printInfoCollidedTile(tileID);
-
-                    }
+                    printInfoCollidedTile(tile1_ID);
+                    printInfoCollidedTile(tile2_ID);
                 }
                 break;
             case "down":
-                collisionRow = collisionDownY / gamePanel.tileSize;
-
-                collisionCol = collisionLeftX / gamePanel.tileSize;
-                tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
-                if(tileHasCollision(TileManager.tiles, tileID)){
+                tile1_ID = gamePanel.tileManager.parsedMap.get(collisionBottomRow).get(collisionLeftCol);
+                tile2_ID = gamePanel.tileManager.parsedMap.get(collisionBottomRow).get(collisionRightCol);
+                if(tileHasCollision(TileManager.tiles, tile1_ID) || tileHasCollision(TileManager.tiles, tile2_ID)){
                     entity.collisionOn = true;
-                    printInfoCollidedTile(tileID);
-
-                }
-                // wahrscheinlich ist, dass der Tile daneben solid ist
-                else{
-                    collisionCol = collisionRightX / gamePanel.tileSize;
-                    tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
-                    if(tileHasCollision(TileManager.tiles, tileID)){
-                        entity.collisionOn = true;
-                        printInfoCollidedTile(tileID);
-
-                    }
+                    printInfoCollidedTile(tile1_ID);
+                    printInfoCollidedTile(tile2_ID);
                 }
                 break;
             case "left":
-                collisionCol = collisionLeftX / gamePanel.tileSize;
-
-                collisionRow = collisionUpY / gamePanel.tileSize;
-                tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
-                if(tileHasCollision(TileManager.tiles, tileID)){
+                tile1_ID = gamePanel.tileManager.parsedMap.get(collisionTopRow).get(collisionLeftCol);
+                tile2_ID = gamePanel.tileManager.parsedMap.get(collisionBottomRow).get(collisionLeftCol);
+                if(tileHasCollision(TileManager.tiles, tile1_ID) || tileHasCollision(TileManager.tiles, tile2_ID)){
                     entity.collisionOn = true;
-                    printInfoCollidedTile(tileID);
-                }
-                // wahrscheinlich ist, dass der Tile daneben solid ist
-                else{
-                    collisionRow = collisionDownY / gamePanel.tileSize;
-                    tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
-                    if(tileHasCollision(TileManager.tiles, tileID)){
-                        entity.collisionOn = true;
-                        printInfoCollidedTile(tileID);
-                    }
+                    printInfoCollidedTile(tile1_ID);
+                    printInfoCollidedTile(tile2_ID);
                 }
                 break;
             case "right":
-                collisionCol = collisionRightX / gamePanel.tileSize;
-
-                collisionRow = collisionUpY / gamePanel.tileSize;
-                tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
-                if(tileHasCollision(TileManager.tiles, tileID)){
+                tile1_ID = gamePanel.tileManager.parsedMap.get(collisionTopRow).get(collisionRightCol);
+                tile2_ID = gamePanel.tileManager.parsedMap.get(collisionBottomRow).get(collisionRightCol);
+                if(tileHasCollision(TileManager.tiles, tile1_ID) || tileHasCollision(TileManager.tiles, tile2_ID)){
                     entity.collisionOn = true;
-                    printInfoCollidedTile(tileID);
-                }
-                // wahrscheinlich ist, dass der Tile daneben solid ist
-                else{
-                    collisionRow = collisionDownY / gamePanel.tileSize;
-                    tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
-                    if(tileHasCollision(TileManager.tiles, tileID)){
-                        entity.collisionOn = true;
-                        printInfoCollidedTile(tileID);
-                    }
+                    printInfoCollidedTile(tile1_ID);
+                    printInfoCollidedTile(tile2_ID);
                 }
                 break;
             default:

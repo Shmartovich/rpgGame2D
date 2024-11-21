@@ -33,7 +33,7 @@ public class TileManager {
        int worldRow = 0;
 
        while(worldCol < gamePanel.maxWorldCol && worldRow < gamePanel.maxWorldRow){
-           int tileID = parsedMap.get(worldCol).get(worldRow);
+           int tileID = parsedMap.get(worldRow).get(worldCol);
 
            int worldX = worldCol * gamePanel.tileSize;
            int worldY = worldRow * gamePanel.tileSize;
@@ -139,7 +139,7 @@ public class TileManager {
     }
     private static void createTilesArray(File file, boolean collision){
         try{
-            // todo ich muss was mit Paths machen, damit ich absolute pdafe nicht mehr benutze
+            // todo ich muss was mit Paths machen, damit ich absolute pfade nicht mehr benutze
             int lastCommaIndex = file.getPath().lastIndexOf("/");
             String tileName = file.getPath().substring(lastCommaIndex + 1);
             Tile tile = new Tile(ImageIO.read(file), collision, tileName);
