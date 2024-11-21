@@ -3,8 +3,8 @@ package Entity;
 import java.awt.*;
 
 public class Entity {
-    public int screenX;
-    public int screenY;
+    public int screenCenterX;
+    public int screenCenterY;
     public int worldX;
     public int worldY;
 

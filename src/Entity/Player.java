@@ -25,8 +25,8 @@ public class Player extends Entity {
         setDefaultValues();
     }
     public void setDefaultValues(){
-        screenX = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
-        screenY = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2;
+        screenCenterX = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
+        screenCenterY = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2;
         worldX = 48;
         worldY = 48;
         collisionRectangle = new Rectangle();
@@ -110,22 +110,8 @@ public class Player extends Entity {
             default:
                 break;
         }
-
-        switch (direction){
-            case "up":
-                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
-                break;
-            case "down":
-                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
-                break;
-            case "left":
-                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
-                break;
-            case "right":
-                imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
-                break;
-        }
-        g2.drawImage(imageToDraw, screenX, screenY, gamePanel.tileSize, playerFrameHeight * 3, null);
+        imageToDraw = animationAdam.getFrames()[directionIndex * imagesInSheet + spriteNumber];
+        g2.drawImage(imageToDraw, screenCenterX, screenCenterY, gamePanel.tileSize, playerFrameHeight * gamePanel.scale, null);
     }
 
     private void printCollisionCoordinates(){

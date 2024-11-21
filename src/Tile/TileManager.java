@@ -29,20 +29,20 @@ public class TileManager {
     }
 
     public void draw(Graphics2D graphics2D){
-        int screenX = 0;
-        int screenY = 0;
+        int tempScreenX = 0;
+        int tempScreenY = 0;
 
-        // tile where player is right now
-        int startCol = (gamePanel.player.worldX - gamePanel.player.screenX)/ gamePanel.tileSize;
-        int startRow = (gamePanel.player.worldY - gamePanel.player.screenY)/ gamePanel.tileSize;
+        // upper left tile
+        int startCol = (gamePanel.player.worldX - gamePanel.player.screenCenterX)/ gamePanel.tileSize;
+        int startRow = (gamePanel.player.worldY - gamePanel.player.screenCenterY)/ gamePanel.tileSize;
         int i = startRow;
         int j = startCol;
-        while(screenY < gamePanel.screenHeight){
-            while(screenX < gamePanel.screenWidth){
+        while(tempScreenY < gamePanel.screenHeight){
+            while(tempScreenX < gamePanel.screenWidth){
                 BufferedImage image;
 
                 if(i < 0 ||  i >= parsedMap.size() - 1 || j < 0 || j >= parsedMap.get(i).size() - 1){
-                    image = tiles.get(0).image;
+                    image = tiles.get(0).image; // get default solid Tile
                 }
                 else{
                     int imageID = parsedMap.get(i).get(j);
@@ -51,14 +51,14 @@ public class TileManager {
                             .findFirst()
                             .get().image;
                 }
-                graphics2D.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
-                screenX += gamePanel.tileSize;
+                graphics2D.drawImage(image, tempScreenX, tempScreenY, gamePanel.tileSize, gamePanel.tileSize, null);
+                tempScreenX += gamePanel.tileSize;
                 j++;
             }
             j = startCol;
             i++;
-            screenX = 0;
-            screenY += gamePanel.tileSize;
+            tempScreenX = 0;
+            tempScreenY += gamePanel.tileSize;
         }
         int x = 0;
         while (x < 5){
