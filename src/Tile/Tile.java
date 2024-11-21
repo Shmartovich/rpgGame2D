@@ -11,10 +11,12 @@ public class Tile {
     public BufferedImage image;
     public boolean collision;
     public int id;
+    public String name;
 
-    Tile(BufferedImage image, boolean collision) {
+    Tile(BufferedImage image, boolean collision, String name) {
         this.image = image;
         this.collision = collision;
+        this.name = name;
         id = counter++;
     }
 

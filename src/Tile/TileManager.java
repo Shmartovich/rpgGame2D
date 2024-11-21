@@ -40,7 +40,14 @@ public class TileManager {
            int screenX = worldX - gamePanel.player.worldX + gamePanel.player.screenCenterX;
            int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenCenterY;
 
-           graphics2D.drawImage(findTile(tileID).image, screenX, screenY, gamePanel.tileSize,gamePanel.tileSize, null);
+           if(worldX > gamePanel.player.worldX - gamePanel.player.screenCenterX &&
+                   worldX < gamePanel.player.worldX + gamePanel.player.screenCenterX &&
+                   worldY > gamePanel.player.worldY - gamePanel.player.screenCenterY &&
+                   worldY < gamePanel.player.worldY + gamePanel.player.screenCenterY
+           ){
+               graphics2D.drawImage(findTile(tileID).image, screenX, screenY, gamePanel.tileSize,gamePanel.tileSize, null);
+           }
+
            worldCol++;
            if(worldCol == gamePanel.maxWorldCol){
                worldRow++;
@@ -132,7 +139,10 @@ public class TileManager {
     }
     private static void createTilesArray(File file, boolean collision){
         try{
-            Tile tile = new Tile(ImageIO.read(file), collision);
+            // todo ich muss was mit Paths machen, damit ich absolute pdafe nicht mehr benutze
+            int lastCommaIndex = file.getPath().lastIndexOf("/");
+            String tileName = file.getPath().substring(lastCommaIndex + 1);
+            Tile tile = new Tile(ImageIO.read(file), collision, tileName);
             tiles.add(tile);
         }
         catch (IOException e){
@@ -140,7 +150,7 @@ public class TileManager {
         }
     }
 
-    private Tile findTile(int id){
+    public static Tile findTile(int id){
         for(Tile tile : tiles){
             if(tile.id == id){
                 return tile;

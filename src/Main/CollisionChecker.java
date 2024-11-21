@@ -28,6 +28,8 @@ public class CollisionChecker {
                 tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
                 if(tileHasCollision(TileManager.tiles, tileID)){
                     entity.collisionOn = true;
+                    printInfoCollidedTile(tileID);
+
                 }
                 // wahrscheinlich ist, dass der Tile daneben solid ist
                 else{
@@ -35,6 +37,8 @@ public class CollisionChecker {
                     tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
                     if(tileHasCollision(TileManager.tiles, tileID)){
                         entity.collisionOn = true;
+                        printInfoCollidedTile(tileID);
+
                     }
                 }
                 break;
@@ -45,6 +49,8 @@ public class CollisionChecker {
                 tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
                 if(tileHasCollision(TileManager.tiles, tileID)){
                     entity.collisionOn = true;
+                    printInfoCollidedTile(tileID);
+
                 }
                 // wahrscheinlich ist, dass der Tile daneben solid ist
                 else{
@@ -52,6 +58,8 @@ public class CollisionChecker {
                     tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
                     if(tileHasCollision(TileManager.tiles, tileID)){
                         entity.collisionOn = true;
+                        printInfoCollidedTile(tileID);
+
                     }
                 }
                 break;
@@ -62,6 +70,7 @@ public class CollisionChecker {
                 tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
                 if(tileHasCollision(TileManager.tiles, tileID)){
                     entity.collisionOn = true;
+                    printInfoCollidedTile(tileID);
                 }
                 // wahrscheinlich ist, dass der Tile daneben solid ist
                 else{
@@ -69,6 +78,7 @@ public class CollisionChecker {
                     tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
                     if(tileHasCollision(TileManager.tiles, tileID)){
                         entity.collisionOn = true;
+                        printInfoCollidedTile(tileID);
                     }
                 }
                 break;
@@ -79,6 +89,7 @@ public class CollisionChecker {
                 tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
                 if(tileHasCollision(TileManager.tiles, tileID)){
                     entity.collisionOn = true;
+                    printInfoCollidedTile(tileID);
                 }
                 // wahrscheinlich ist, dass der Tile daneben solid ist
                 else{
@@ -86,6 +97,7 @@ public class CollisionChecker {
                     tileID = gamePanel.tileManager.parsedMap.get(collisionRow).get(collisionCol);
                     if(tileHasCollision(TileManager.tiles, tileID)){
                         entity.collisionOn = true;
+                        printInfoCollidedTile(tileID);
                     }
                 }
                 break;
@@ -100,5 +112,8 @@ public class CollisionChecker {
             }
         }
         return false;
+    }
+    private void printInfoCollidedTile(int tileID){
+        System.out.printf("Tile rechts ist solid, you cant go through %s\n", TileManager.findTile(tileID).name);
     }
 }

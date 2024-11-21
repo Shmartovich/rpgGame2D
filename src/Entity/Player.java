@@ -54,7 +54,7 @@ public class Player extends Entity {
             System.out.printf("ich stehe hier: col %d, row %d\n", worldX/ gamePanel.tileSize, worldY/ gamePanel.tileSize);
             printCollisionCoordinates();
             gamePanel.collisionChecker.checkTile(this);
-            if(collisionOn == false){
+            if(!collisionOn){
                 switch (direction){
                     case "up":
                         worldY -= speed;
